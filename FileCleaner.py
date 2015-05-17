@@ -1,8 +1,6 @@
 from config import settings
+from manage.manager import Manager
 
 if __name__ == '__main__':
     settings = settings.get_settings()
-    # Log Last Run
-    # Scan Folders for Potentials
-
-
+    manager = Manager(settings)

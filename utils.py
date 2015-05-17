@@ -13,14 +13,11 @@ def get_total_filesize(filenames):
     return total_size / BYTES_TO_MEGABYTES
 
 
-def process_files(folder_root, filenames):
-    for filename in filenames:
-        all_files.append(join(folder_root, filename))
+def discover_files(folder_root):
+    filenames_to_return = []
 
-
-def discover_folders(folder_root):
     for root, dirs, files in walk(folder_root, followlinks=False):
-        process_files(root, files)
+        for filename in files:
+            filenames_to_return.append(join(root, filename))
 
-        for folder in dirs:
-            discover_folders(join(root, folder))
+    return filenames_to_return
