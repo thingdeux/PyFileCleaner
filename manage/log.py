@@ -1,5 +1,6 @@
 import logging
 
+# TODO : Use Singleton for logger so only one file is created
 logging.basicConfig(
     format='%(asctime)s %(message)s',
     datefmt='%m/%d/%Y %I:%M:%S %p',
