@@ -22,7 +22,7 @@ class File(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(512))
     path = db.Column(db.String(512))
-    size = db.Column(db.Integer)
+    size = db.Column(db.Float)
     extension = db.Column(db.String(256))
     folder_id = db.Column(db.Integer, db.ForeignKey(Folder.id))
 
@@ -31,7 +31,9 @@ class File(db.Model):
         self.path = File.path
         self.name = File.filename
         self.extension = File.extension
+        self.size = File.size
         self.folder_id = parent_folder
+
 
     def __repr__(self):
         return '<File {}>'.format(self.path)

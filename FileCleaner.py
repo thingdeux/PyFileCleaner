@@ -8,4 +8,3 @@ if __name__ == '__main__':
     manager = FileManager(settings)
     manager.scan()
     from web import runserver
-

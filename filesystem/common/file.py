@@ -1,14 +1,10 @@
 from os.path import getsize
 from shutil import copy2, move
-
+from decimal import Decimal
 from filesystem.manage import log
 
 
 class File:
-    path = ""
-    filename = ""
-    extension = ""
-
     def __init__(self, path):
         self.path = path
         # Might only work on Unix filesystems
@@ -20,9 +16,12 @@ class File:
         if len(extension) > 1:
             self.extension = extension[-1:][0]
 
+        self.size = self.get_size()
+
     def get_size(self):
         BYTES_TO_MEGABYTES = 1024 * 1024
-        return getsize(self.filename) / BYTES_TO_MEGABYTES
+        size = Decimal(getsize(self.path) / BYTES_TO_MEGABYTES)
+        return round(size, 3)
 
     def move(self, destination):
         move(self.filename, destination)
@@ -62,3 +61,6 @@ class File:
                 has_filter = True
                 break
         return has_filter
+
+    def __str__(self):
+        return self.path

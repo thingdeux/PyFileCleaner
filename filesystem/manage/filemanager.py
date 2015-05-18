@@ -5,7 +5,6 @@ from db.models import db
 
 class FileManager():
     settings = None
-    folders = []
 
     def __init__(self, settings):
         self.settings = settings
@@ -14,7 +13,7 @@ class FileManager():
     def scan(self):
         self.folders = []
         self.create_folders()
-        self.update_folders()
+        self.update_db()
 
     def create_folders(self):
         for folder in self.folder_list:
@@ -25,7 +24,8 @@ class FileManager():
                 'filter_text': self.filter_text
             }
 
-            self.folders.append(Folder(folder, settings))
+            new_folder = Folder(folder, settings)
+            self.folders.append(new_folder)
 
     def init_settings(self):
         self.action_to_take = self.settings.get('GENERAL', 'Action')
@@ -51,15 +51,30 @@ class FileManager():
         str_to_return = str_to_return.strip('\n')
         return str_to_return
 
-    def update_folders(self):
-        for folder in self.folders:
-            existing_folder = dbFolder.query.filter_by(path=folder.root_path).first()
-            if existing_folder == None:
-                created_folder = dbFolder(folder)
-
-                for file in folder.files:
-                    created_file = dbFile(file, created_folder.id)
-                    db.session.add(created_file)
-                db.session.add(created_folder)
+    def create_new_db_file_records(self, folder, db_folder):
+        for file in folder.files:
+            created_file = dbFile(file, db_folder.id)
+            db.session.add(created_file)
 
         db.session.commit()
+
+    def update_db(self):
+        for folder in self.folders:
+            existing_folder = dbFolder.query.filter_by(path=folder.root_path).first()
+
+            if existing_folder == None:
+                created_folder = dbFolder(folder)
+                db.session.add(created_folder)
+                db.session.commit()
+                self.create_new_db_file_records(folder, created_folder)
+            else:
+                # Just blow out all of the records and re-create, no need to update or do deltas
+                old_files = dbFile.query.filter_by(folder_id=existing_folder.id)
+                for file in old_files:
+                    db.session.delete(file)
+                db.session.commit()
+                self.create_new_db_file_records(folder, existing_folder)
+
+
+
+

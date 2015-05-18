@@ -5,21 +5,19 @@ from filesystem.manage.log import log
 
 
 class Folder:
-    files = []
-    root_path = ""
-
     def __init__(self, filepath, settings):
+        self.files = []
         self.root_path = filepath
-        self.discover_files(filepath, settings)
+        self.discover_files(settings)
 
-    def discover_files(self, folder_root, settings):
+    def discover_files(self, settings):
         def walk_error(error):
             log("Error accessing folder: {}".format(error))
             raise error
 
-        for root, dirs, files in walk(folder_root, followlinks=False, onerror=walk_error):
+        for root, dirs, files in walk(self.root_path, followlinks=False, onerror=walk_error):
             for filename in files:
-                file = File(filename)
+                file = File(join(root, filename))
 
                 if settings['using_file_extension_filter']:
                     if file.has_extensions(settings['filter_extensions']):
