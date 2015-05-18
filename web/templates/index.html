@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content_header %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+    {% for folder in folders %}
+        {{ folder.id }}:
+        {{ folder.path }}<br>
+    {% endfor %}
+{% endblock %}

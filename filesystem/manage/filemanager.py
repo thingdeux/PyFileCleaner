@@ -1,14 +1,20 @@
-from common.folder import Folder
-from config.settings import get_settings
+from filesystem.common.folder import Folder
+from db.models import File as dbFile
+from db.models import Folder as dbFolder
+from db.models import db
 
-class Manager():
+class FileManager():
     settings = None
     folders = []
 
     def __init__(self, settings):
         self.settings = settings
         self.init_settings()
+
+    def scan(self):
+        self.folders = []
         self.create_folders()
+        self.update_folders()
 
     def create_folders(self):
         for folder in self.folder_list:
@@ -45,12 +51,15 @@ class Manager():
         str_to_return = str_to_return.strip('\n')
         return str_to_return
 
+    def update_folders(self):
+        for folder in self.folders:
+            existing_folder = dbFolder.query.filter_by(path=folder.root_path).first()
+            if existing_folder == None:
+                created_folder = dbFolder(folder)
 
+                for file in folder.files:
+                    created_file = dbFile(file, created_folder.id)
+                    db.session.add(created_file)
+                db.session.add(created_folder)
 
-    # Should probably log if no files come back in any of the folders
-
-
-if __name__ == '__main__':
-    settings = get_settings()
-    man = Manager(settings)
-    pass
+        db.session.commit()

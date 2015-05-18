@@ -1,7 +1,11 @@
 from config import settings
-from manage.manager import Manager
-from manage.log import log
+from filesystem.manage.filemanager import FileManager
+from db.models import check_db_exists
 
 if __name__ == '__main__':
+    check_db_exists()
     settings = settings.get_settings()
-    manager = Manager(settings)
+    manager = FileManager(settings)
+    manager.scan()
+    from web import runserver
+

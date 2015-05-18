@@ -1,7 +1,8 @@
-from manage.log import log
 from os.path import getsize
-from utils import BYTES_TO_MEGABYTES
 from shutil import copy2, move
+
+from filesystem.manage import log
+
 
 class File:
     path = ""
@@ -20,6 +21,7 @@ class File:
             self.extension = extension[-1:][0]
 
     def get_size(self):
+        BYTES_TO_MEGABYTES = 1024 * 1024
         return getsize(self.filename) / BYTES_TO_MEGABYTES
 
     def move(self, destination):
@@ -43,7 +45,6 @@ class File:
                 has_extension = True
                 break
         return has_extension
-
 
     def has_filter_in_name(self, filter_name):
         if self.filename is not None:

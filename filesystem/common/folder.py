@@ -1,7 +1,8 @@
-from common.file import File
-from os import walk, stat
+from os import walk
 from os.path import join
-from manage.log import log
+from filesystem.common.file import File
+from filesystem.manage.log import log
+
 
 class Folder:
     files = []
@@ -12,11 +13,13 @@ class Folder:
         self.discover_files(filepath, settings)
 
     def discover_files(self, folder_root, settings):
-        try:
-            root, dirs, files = walk(folder_root, followlinks=False)
+        def walk_error(error):
+            log("Error accessing folder: {}".format(error))
+            raise error
 
+        for root, dirs, files in walk(folder_root, followlinks=False, onerror=walk_error):
             for filename in files:
-                file = File(join(root, filename))
+                file = File(filename)
 
                 if settings['using_file_extension_filter']:
                     if file.has_extensions(settings['filter_extensions']):
@@ -27,6 +30,4 @@ class Folder:
                     if file.has_filters_in_name(settings['filter_text']):
                         self.files.append(file)
                         continue
-        except ValueError:
-            log("Folder is empty or no access: {}".format(folder_root))
 
