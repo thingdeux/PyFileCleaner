@@ -1,7 +1,9 @@
 from filesystem.common.folder import Folder
 from db.models import File as dbFile
 from db.models import Folder as dbFolder
+from db.models import Log as dbLog
 from db.models import db
+from filesystem.manage.log import log
 
 class FileManager():
     settings = None
@@ -54,6 +56,8 @@ class FileManager():
     def create_new_db_file_records(self, folder, db_folder):
         for file in folder.files:
             created_file = dbFile(file, db_folder.id)
+            db.session.add(dbLog("Found File: {}".format(file.filename), "INFO"))
+            log("Found File: {}".format(file), log_type="INFO")
             db.session.add(created_file)
 
         db.session.commit()
@@ -65,6 +69,8 @@ class FileManager():
             if existing_folder == None:
                 created_folder = dbFolder(folder)
                 db.session.add(created_folder)
+                db.session.add(dbLog("Tracking New Folder: {}".format(folder.root_path), "INFO"))
+                log("Tracking New Folder: {}".format(folder.root_path), log_type="INFO")
                 db.session.commit()
                 self.create_new_db_file_records(folder, created_folder)
             else:

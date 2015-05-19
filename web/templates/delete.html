@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content_header %}
+Delete
+{% endblock %}
+
+{% block content %}
+    {% for folder in folders %}
+        <div class="folder_section">
+            <h4 class="folder_header" id="folder-{{folder.id}}">{{ folder.path | title }}</h4>
+                <table role="grid">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width ="500">Filename</th>
+                            <th class="text-center" width ="750">File Path</th>
+                            <th class="text-center" width ="100">Size</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for file in folder.files %}
+                            <tr>
+                                <td>{{ file.name }}</td>
+                                <td>{{ file.path }}</td>
+                                <td>{{ file.size }} MB's </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+
+    {% endfor %}
+{% endblock %}

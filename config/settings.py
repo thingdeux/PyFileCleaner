@@ -4,6 +4,7 @@ import os
 # Default path is the root of the ProjectDirectory
 DEFAULT_PATH = os.path.dirname(os.path.dirname(__file__))
 DEFAULT_SETTINGS_PATH = os.path.join(DEFAULT_PATH, "Settings.conf")
+MAX_LOG_SIZE = 10 * (1024*1024)
 
 def get_settings():
     config = ConfigParser()

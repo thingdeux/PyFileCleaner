@@ -5,32 +5,52 @@ Dashboard
 {% endblock %}
 
 {% block content %}
+    <div class="row">
+        <div class="small-3 columns tiny_pad">
+            <h4 class="underlined text-center">File Counts</h4>
 
-    {% for folder in folders %}
-        <div class="folder_section">
-            <h4 class="folder_header" id="folder-{{folder.id}}">Folder: {{ folder.path }}</h4>
-                <table>
-                    <thead>
-                        <tr>
-                            <th class="text-center" width ="500">Filename</th>
-                            <th class="text-center" width ="750">File Path</th>
-                            <th class="text-center" width ="100">Size</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {% for file in folder.files %}
-                            <tr>
-                                <td>{{ file.name }}</td>
-                                <td>{{ file.path }}</td>
-                                <td>{{ file.size }} MB's </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <table role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="150">Extension</th>
+                        <th class="text-center" width="150">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for key, val in counts|dictsort(false, 'value') %}
+                    <tr>
+                        <td class="ext_key text-center">{{ key | upper }}</td>
+                        <td class="text-center">{{ val }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
+        <div class="small-9 columns tiny_pad">
+            <h4 class="underlined text-center">Status</h4>
 
-    {% endfor %}
+            <table role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="150">Type</th>
+                        <th class="text-center" width="750">Message</th>
+                        <th class="text-center" width="300">Time</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td class="text-center">{{ log.log_type | upper }}</td>
+                        <td class="text-center">{{ log.message }}</td>
+                        <td class="text-center">{{ log.time.strftime('%a %b %d %I:%M %p') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 
 
 {% endblock %}

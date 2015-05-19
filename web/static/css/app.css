@@ -3,6 +3,22 @@
     padding: 20px;
 }
 
+.tiny_pad {
+    padding: 10px;
+}
+
+.tiny_left_pad {
+    padding-left: 10px;
+}
+
 .folder_section {
     padding: 10px;
+}
+
+.underlined {
+    text-decoration: underline;
+}
+
+.ext_key {
+    font-weight: bold;
 }
