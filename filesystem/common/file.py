@@ -1,5 +1,6 @@
 from os.path import getsize
 from shutil import copy2, move
+from os import remove
 from decimal import Decimal
 from filesystem.manage import log
 
@@ -28,6 +29,9 @@ class File:
 
     def copy(self, destination):
         copy2(self.filename, destination)
+
+    def delete(self):
+        remove(self.path)
 
     def has_extension(self, extension):
         if self.extension is not None:

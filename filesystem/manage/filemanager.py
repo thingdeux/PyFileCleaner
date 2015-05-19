@@ -30,8 +30,6 @@ class FileManager():
             self.folders.append(new_folder)
 
     def init_settings(self):
-        self.action_to_take = self.settings.get('GENERAL', 'Action')
-        self.action_reason = self.settings.get('GENERAL', 'Action Reason')
         self.using_text_filter = self.settings.getboolean('FILTERS', 'Filter By Text')
         self.using_file_extension_filter = self.settings.getboolean('FILTERS', 'Filter By File Extensions')
         self.log_location = self.settings.get('LOGS', 'Location')

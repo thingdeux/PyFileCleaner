@@ -7,13 +7,16 @@ Delete
 {% block content %}
     {% for folder in folders %}
         <div class="folder_section">
-            <h4 class="folder_header" id="folder-{{folder.id}}">{{ folder.path | title }}</h4>
+            <h4 class="folder_header">{{ folder.path | title }}</h4>
+            <button class="button tiny radius folder-del" fileid="{{folder.id}}">Delete All Files</button>
+
                 <table role="grid">
                     <thead>
                         <tr>
                             <th class="text-center" width ="500">Filename</th>
                             <th class="text-center" width ="750">File Path</th>
                             <th class="text-center" width ="100">Size</th>
+                            <th class="text-center" width ="250">Actions</th>
                         </tr>
                     </thead>
 
@@ -22,7 +25,13 @@ Delete
                             <tr>
                                 <td>{{ file.name }}</td>
                                 <td>{{ file.path }}</td>
-                                <td>{{ file.size }} MB's </td>
+                                <td>{{ file.size }} MB's</td>
+                                <td>
+                                  <ul class="button-group radius text-center">
+                                    <li><a fileid={{file.id}} class="tiny button action-button file-del">DEL</a></li>
+                                    <li><a fileid={{file.id}} class="tiny button action-button file-move">MOVE</a></li>
+                                  </ul>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -30,4 +39,13 @@ Delete
         </div>
 
     {% endfor %}
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+        $('.action-button').click(function(event)
+        {
+            event.preventDefault();
+        });
+    </script>
 {% endblock %}

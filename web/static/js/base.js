@@ -25,5 +25,28 @@ $(document).ready(function() {
         }
     )
 
+    $(".file-del").click(function(event) {
+            var file_id = event.target.attributes.getNamedItem('fileid');
+            post("/delete/file/" + file_id.value + "/");
+            location.reload();
+        }
+    )
+
+    $(".file-move").click(function(event) {
+            var file_id = event.target.attributes.getNamedItem('fileid');
+            post("/move/" + file_id.value + "/");
+            location.reload();
+        }
+    )
+
+    $(".folder-del").click(function(event) {
+            var file_id = event.target.attributes.getNamedItem('fileid');
+            post("/delete/folder/" + file_id.value + "/");
+            location.reload();
+        }
+    )
+
+
+
 
 });

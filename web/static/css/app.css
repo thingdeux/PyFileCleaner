@@ -19,6 +19,16 @@
     padding-left: 10px;
 }
 
+.folder_header {
+    float: left;
+}
+
+.folder-del {
+    margin-left: 2%;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .folder_section {
     padding: 10px;
 }

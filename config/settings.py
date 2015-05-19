@@ -18,19 +18,30 @@ def get_settings():
 
     return config
 
+def get_easy_settings():
+    class EasySettings:
+        def __init__(self, settings_obj):
+            # for key, value in settings_obj['SERVER'].items():
+            #     setattr(self, key, settings_obj.getboolean(value))
+            self.DEBUG = settings_obj.getboolean('SERVER', 'DEBUG')
+            self.PORT = int(settings_obj.get('SERVER', 'PORT'))
+
+    return EasySettings(get_settings())
+
+
+
 def write_default_settings():
     config = ConfigParser()
     config.optionxform = str
 
     config['GENERAL'] = {
         'Folders To Check': "",
-        'Action': "Touch"
     }
     config['FILTERS'] = {
-        'Filter By Text': "False",
-        'Filter By File Extensions': "True",
-        'Filter Text': "sample",
-        'Filter Extensions': ".mkv, .nfo"
+        'Filter By Text': "yes",
+        'Filter By File Extensions': "yes",
+        'Filter Text': "sample,\n readme",
+        'Filter Extensions': "nfo-orig,\n nfo,\nsfv,\nnzb"
     }
     config['LOGS'] = {
         'Location': "Local"

@@ -1,5 +1,6 @@
 from web import app
 from flask import render_template, Response
+from filesystem.manage.log import log
 
 @app.route("/")
 def index():
@@ -41,12 +42,59 @@ def purge(to_purge):
 
 @app.route("/delete")
 def delete():
-    from db.models import File, Folder
+    from db.models import Folder
     folders = Folder.query.all()
 
     return render_template('delete.html',
                            folders=folders,
                            name=delete)
+
+@app.route("/delete/<file_or_folder>/<object_id>/", methods=['POST'])
+def delete_file_or_folder(file_or_folder, object_id):
+    # TODO: Should do this all in a background task
+
+    from db.models import Folder, File, Log, db
+    from filesystem.common.file import File as FSFile
+
+    if file_or_folder == "folder":
+        try:
+            # Query all files in the folder, delete them
+            files_to_delete = File.query.filter_by(folder_id=object_id)
+            for file in files_to_delete:
+                file_to_delete = FSFile(file.path)
+                file_to_delete.delete()
+                log("Deleted File: {}".format(file.path), log_type="INFO")
+                db.session.add(Log("Deleted File: {}".format(file.path), "INFO"))
+                db.session.delete(file)
+            db.session.commit()
+            return Response(status=200)
+        except OSError as e:
+            log("Problem Deleting File: {}".format(e))
+
+    elif file_or_folder == "file":
+        try:
+            db_file = File.query.filter_by(id=object_id).first()
+            to_delete = FSFile(db_file.path)
+            to_delete.delete()
+
+            log("Deleted File: {}".format(db_file.path), log_type="INFO")
+            db.session.add(Log("Deleted File: {}".format(db_file.path), "INFO"))
+            db.session.delete(db_file)
+            db.session.commit()
+            return Response(status=200)
+        except ValueError as e:
+            log("No File.ID found to delete: {}".format(e))
+
+
+
+
+@app.route("/move/<file_id>/", methods=['POST'])
+def move_file(file_id):
+    from db.models import File
+    # Move File
+    print(file_id)
+    return (Response(status=200))
+
 
 @app.route("/settings")
 def config():
