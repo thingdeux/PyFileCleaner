@@ -34,11 +34,11 @@ class File:
         remove(self.path)
 
     def has_extension(self, extension):
-        if self.extension is not None:
+        try:
             if self.extension == extension:
                 return True
             return False
-        else:
+        except AttributeError:
             return False
 
     def has_extensions(self, extension_list):
