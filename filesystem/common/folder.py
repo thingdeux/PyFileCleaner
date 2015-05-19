@@ -12,8 +12,8 @@ class Folder:
 
     def discover_files(self, settings):
         def walk_error(error):
-            log("Error accessing folder: {}".format(error))
-            raise error
+            if error is PermissionError:
+                log("Error accessing folder: {}".format(error))
 
         for root, dirs, files in walk(self.root_path, followlinks=False, onerror=walk_error):
             for filename in files:
