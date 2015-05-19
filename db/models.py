@@ -65,7 +65,7 @@ class Log(db.Model):
 
     @staticmethod
     def get_latest_logs():
-        return Log.query.order_by(desc(Log.id)).limit(30)
+        return Log.query.order_by(desc(Log.id)).limit(15)
 
     @staticmethod
     def get_logs_by_offset(offset=0, limit=50):

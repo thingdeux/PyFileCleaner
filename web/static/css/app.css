@@ -7,6 +7,14 @@
     padding: 10px;
 }
 
+.tiny_top_pad {
+    padding-top: 10px;
+}
+
+.medium-pad {
+    padding: 20px;
+}
+
 .tiny_left_pad {
     padding-left: 10px;
 }
@@ -20,5 +28,14 @@
 }
 
 .ext_key {
+    font-weight: bold;
+}
+
+
+
+#log-count {
+    font-size: 20px;
+}
+#purge-button {
     font-weight: bold;
 }

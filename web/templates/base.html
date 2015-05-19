@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/css/foundation.min.css">
-    <link rel="stylesheet" href="static/css/app.css">
-    <link rel="stylesheet" href="static/css/normalize.css">
-    <script src="static/js/vendor/modernizr.js"></script>
+    <link rel="stylesheet" href="/static/css/foundation.min.css">
+    <link rel="stylesheet" href="/static/css/app.css">
+    <link rel="stylesheet" href="/static/css/normalize.css">
+    {% block extra_css %}{% endblock %}
+    <script src="/static/js/vendor/modernizr.js"></script>
     <title>PyFileCleaner</title>
 </head>
 <body>
@@ -30,7 +31,7 @@
             <li><a href="/delete">Delete</a></li>
             <li><label>Config</label></li>
             <li><a href="/settings">Settings</a></li>
-            <li><a href="/purge">Log Purge</a></li>
+            <li><a href="/logs/0/">Logs</a></li>
           </ul>
         </aside>
 
@@ -50,10 +51,13 @@
 
 
 
-    <script src="static/js/vendor/jquery.js"></script>
-    <script src="static/js/foundation.min.js"></script>
+    <script src="/static/js/vendor/jquery.js"></script>
+    <script src="/static/js/foundation.min.js"></script>
     <script>
       $(document).foundation();
     </script>
+
+    <script src="/static/js/base.js"></script>
+    {% block extrajs %}{% endblock %}
 </body>
 </html>

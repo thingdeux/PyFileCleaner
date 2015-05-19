@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content_header %}
+Purge
+{% endblock %}
+
+{% block content %}
+    <div class = "row">
+        <div class="small-5 columns text-left">
+            <button id="purge-button" class="button radius small">PURGE THE LOGS</button>
+        </div>
+
+        <div class="small-3 columns tiny_top_pad">
+            {% if more_results == True %}
+                <a href="/logs/{{next_page}}"> NEXT PAGE </a>
+            {% endif %}
+        </div>
+
+        <div id="log-count" class="small-4 columns text-right">
+            {{ log_count }} entries
+        </div>
+    </div>
+
+    <div class = "row">
+        <div class="small-12 columns tiny_pad">
+            <table role="grid">
+                <thead>
+                    <tr>
+                        <th class="text-center" width="80">Id</th>
+                        <th class="text-center" width="150">Type</th>
+                        <th class="text-center" width="750">Message</th>
+                        <th class="text-center" width="300">Time</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td class="text-center">{{ log.id }}</td>
+                        <td class="text-center">{{ log.log_type | upper }}</td>
+                        <td class="text-center">{{ log.message }}</td>
+                        <td class="text-center">{{ log.time.strftime('%a %b %d %I:%M %p') }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
